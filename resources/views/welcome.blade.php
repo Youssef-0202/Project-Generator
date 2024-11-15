@@ -14,7 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <div class="container">
-                <a class="navbar-brand" href="#">FrontendGen</a>
+                <a class="navbar-brand" href="#">WebsiteGen</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -36,8 +36,8 @@
         <div class="container text-center">
             <div class="row">
                 <div class="col-lg-8 mx-auto">
-                    <h1 class="display-4 mb-4">Build Beautiful Frontends Effortlessly</h1>
-                    <p class="lead mb-5">Leverage our powerful frontend generator to create stunning, responsive websites in minutes. No coding required!</p>
+                    <h1 class="display-4 mb-4">Build Beautiful Websites Effortlessly</h1>
+                    <p class="lead mb-5">Leverage our powerful website generator to create stunning, responsive websites in minutes. No coding required!</p>
                     <a href="#" class="btn btn-primary btn-lg me-3">Get Started</a>
                     <a href="/features" class="btn btn-outline-light btn-lg">Learn More</a>
                 </div>
@@ -47,7 +47,7 @@
 
     <!-- Footer -->
     <footer class="bg-dark text-light py-3 text-center">
-        <p>&copy; 2024 FrontendGen. All rights reserved.</p>
+        <p>&copy; 2024 WebsiteGen. All rights reserved.</p>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/js/bootstrap.bundle.min.js"></script>
