@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('champs', function (Blueprint $table) {
-            $table->id();
+            $table->id('fieldId');
+            $table->string('typeChamp');
+            $table->string('etiquette');
+            $table->boolean('obligatoire');
+            $table->string('defaultVal');
             $table->timestamps();
+            $table->unsignedBigInteger('componentId');
+            $table->foreign('componentId')
+                  ->references('componentId')
+                  ->on('composants')->onDelete('cascade');
         });
     }
 

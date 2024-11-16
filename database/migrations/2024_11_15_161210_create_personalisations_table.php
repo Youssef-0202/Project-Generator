@@ -12,8 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('personalisations', function (Blueprint $table) {
-            $table->id();
+            $table->id('customizationId');
+            $table->unsignedBigInteger('projectId');
+            $table->unsignedBigInteger('componentId');
+            $table->string('champ');
+            $table->text('valeur');
             $table->timestamps();
+
+            // Clés étrangères
+            $table->foreign('projectId')->references('projectId')->on('projects')->onDelete('cascade');
+            $table->foreign('componentId')->references('componentId')->on('composants')->onDelete('cascade');
         });
     }
 
