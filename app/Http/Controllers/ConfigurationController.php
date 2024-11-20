@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Configuration;
 use Illuminate\Http\Request;
 
 class ConfigurationController extends Controller
@@ -11,7 +12,8 @@ class ConfigurationController extends Controller
      */
     public function index()
     {
-        //
+        $configurations = Configuration::all();
+        return view('configurations.index', compact('configurations'));
     }
 
     /**
@@ -19,7 +21,7 @@ class ConfigurationController extends Controller
      */
     public function create()
     {
-        //
+        return view('configurations.create');
     }
 
     /**
@@ -27,7 +29,15 @@ class ConfigurationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'themeColor' => 'required|string',
+            'fontStyle' => 'required|string',
+            'layout' => 'required|string',
+        ]);
+
+        Configuration::create($request->all());
+
+        return redirect()->route('configurations.index')->with('success', 'Configuration ajoutée');
     }
 
     /**
@@ -41,24 +51,34 @@ class ConfigurationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Configuration $configuration)
     {
-        //
+        return view('configurations.edit', compact('configuration'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Configuration $configuration)
     {
-        //
+        $request->validate([
+            'themeColor' => 'required|string',
+            'fontStyle' => 'required|string',
+            'layout' => 'required|string',
+        ]);
+
+        $configuration->update($request->all());
+
+        return redirect()->route('configurations.index')->with('success', 'Configuration mise à jour');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Configuration $configuration)
     {
-        //
+        $configuration->delete();
+
+        return redirect()->route('configurations.index')->with('success', 'Configuration supprimée');
     }
 }

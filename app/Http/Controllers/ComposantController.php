@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Composant;
 use Illuminate\Http\Request;
 
 class ComposantController extends Controller
@@ -11,7 +12,7 @@ class ComposantController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Composant::all());
     }
 
     /**
@@ -27,38 +28,55 @@ class ComposantController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'templateId' => 'required|exists:templates,templateId',
+            'type' => 'required|string',
+            'contenu' => 'nullable|string',
+        ]);
+
+        $composant = Composant::create($validated);
+        return response()->json(['message' => 'Composant created successfully', 'composant' => $composant], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show( $id)
     {
-        //
+        $composant = Composant::findOrFail($id);
+        return response()->json($composant);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit( $id)
     {
-        //
+     
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        $composant = Composant::findOrFail($id);
+        $validated = $request->validate([
+            'templateId' => 'required|exists:templates,templateId',
+            'type' => 'required|string',
+            'contenu' => 'nullable|string',
+        ]);
+
+        $composant->update($validated);
+        return response()->json(['message' => 'Composant updated successfully', 'composant' => $composant]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        Composant::destroy($id);
+        return response()->json(['message' => 'Composant deleted successfully']);
     }
 }

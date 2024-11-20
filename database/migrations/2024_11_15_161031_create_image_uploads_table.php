@@ -12,8 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('image_uploads', function (Blueprint $table) {
-            $table->id();
+            $table->id('imageId');
+            $table->unsignedBigInteger('projectId')->nullable();
+            $table->unsignedBigInteger('componentId')->nullable();
+            $table->string('imagePath');
             $table->timestamps();
+           
+            // Clés étrangères
+            $table->foreign('projectId')->references('projectId')->on('projects')->onDelete('cascade');
+            $table->foreign('componentId')->references('componentId')->on('composants')->onDelete('cascade');
         });
     }
 

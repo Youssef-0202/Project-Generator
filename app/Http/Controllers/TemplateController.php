@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Template;
 use Illuminate\Http\Request;
 
 class TemplateController extends Controller
@@ -11,7 +12,8 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        //
+        $templates = Template::with('composants')->get();
+        return response()->json($templates);
     }
 
     /**
@@ -27,7 +29,14 @@ class TemplateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'imagePrev' => 'nullable|string',
+        ]);
+
+        $template = Template::create($validated);
+        return response()->json(['message' => 'Template created successfully', 'template' => $template]);
     }
 
     /**
@@ -35,7 +44,8 @@ class TemplateController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $template = Template::with('composants')->findOrFail($id);
+        return response()->json($template);
     }
 
     /**
@@ -51,7 +61,15 @@ class TemplateController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $template = Template::findOrFail($id);
+        $validated = $request->validate([
+            'nom' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'imagePrev' => 'nullable|string',
+        ]);
+
+        $template->update($validated);
+        return response()->json(['message' => 'Template updated successfully', 'template' => $template]);
     }
 
     /**
@@ -59,6 +77,7 @@ class TemplateController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Template::destroy($id);
+        return response()->json(['message' => 'Template deleted successfully']);
     }
 }

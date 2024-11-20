@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Template;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -12,8 +13,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('composants', function (Blueprint $table) {
-            $table->id();
+            $table->id('componentId');
+            $table->unsignedBigInteger('templateId');
+            $table->string('type');
+            $table->text('contenu')->nullable();
             $table->timestamps();
+            $table->foreign('templateId')->references('templateId')->on('templates')->onDelete('cascade');
         });
     }
 

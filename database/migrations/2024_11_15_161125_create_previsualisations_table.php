@@ -12,8 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('previsualisations', function (Blueprint $table) {
-            $table->id();
+            $table->id('previewId');
+            $table->unsignedBigInteger('projectId');
+            $table->text('contenu');
             $table->timestamps();
+
+            
+            $table->foreign('projectId')->references('projectId')->on('projects')->onDelete('cascade');
         });
     }
 

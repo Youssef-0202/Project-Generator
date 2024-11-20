@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
+            $table->string('themeColor');
+            $table->string('fontStyle');
+            $table->string('layout');
             $table->timestamps();
         });
     }

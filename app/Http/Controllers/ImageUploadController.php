@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ImageUpload;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ImageUploadController extends Controller
 {
@@ -11,7 +13,8 @@ class ImageUploadController extends Controller
      */
     public function index()
     {
-        //
+        $images = ImageUpload::all();
+        return view('images.index', compact('images'));
     }
 
     /**
@@ -19,7 +22,7 @@ class ImageUploadController extends Controller
      */
     public function create()
     {
-        //
+        return view('images.create');
     }
 
     /**
@@ -27,7 +30,19 @@ class ImageUploadController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'imagePath' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $path = $request->file('imagePath')->store('uploads', 'public');
+
+        ImageUpload::create([
+            'projectId' => $request->input('projectId'),
+            'componentId' => $request->input('componentId'),
+            'imagePath' => $path,
+        ]);
+
+        return redirect()->route('images.index')->with('success', 'Image uploadée');
     }
 
     /**
@@ -57,8 +72,10 @@ class ImageUploadController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(ImageUpload $image)
     {
-        //
+        Storage::disk('public')->delete($image->imagePath);
+        $image->delete();
+        return redirect()->route('images.index')->with('success', 'Image supprimée');
     }
 }

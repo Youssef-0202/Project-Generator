@@ -12,7 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('templates', function (Blueprint $table) {
-            $table->id();
+            $table->id('templateId');
+            $table->string('nom');
+            $table->text('description')->nullable();
+            $table->string('imagePrev')->nullable();
             $table->timestamps();
         });
     }
