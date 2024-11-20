@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Previsualisation;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class PrevisualisationController extends Controller
@@ -11,7 +13,8 @@ class PrevisualisationController extends Controller
      */
     public function index()
     {
-        //
+        $previsualisations = Previsualisation::all();
+        return view('previsualisations.index', compact('previsualisations'));
     }
 
     /**
@@ -19,7 +22,8 @@ class PrevisualisationController extends Controller
      */
     public function create()
     {
-        //
+        $projects = Project::all();
+        return view('previsualisations.create', compact('projects'));
     }
 
     /**
@@ -27,7 +31,14 @@ class PrevisualisationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'projectId' => 'required|exists:projects,projectId',
+            'contenu' => 'required|string',
+        ]);
+
+        Previsualisation::create($request->all());
+
+        return redirect()->route('previsualisations.index')->with('success', 'Prévisualisation créée avec succès');
     }
 
     /**
@@ -41,24 +52,34 @@ class PrevisualisationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Previsualisation $previsualisation)
     {
-        //
+        $projects = Project::all();
+        return view('previsualisations.edit', compact('previsualisation', 'projects'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Previsualisation $previsualisation)
     {
-        //
+        $request->validate([
+            'projectId' => 'required|exists:projects,projectId',
+            'contenu' => 'required|string',
+        ]);
+
+        $previsualisation->update($request->all());
+
+        return redirect()->route('previsualisations.index')->with('success', 'Prévisualisation mise à jour');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Previsualisation $previsualisation)
     {
-        //
+        $previsualisation->delete();
+
+        return redirect()->route('previsualisations.index')->with('success', 'Prévisualisation supprimée');
     }
 }

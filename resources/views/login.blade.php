@@ -22,7 +22,7 @@
     <!-- Right Side -->
     <div class="right-section d-flex flex-column justify-content-center align-items-center">
         <h2 class="mb-4">Sign In</h2>
-        <form action="/login" method="POST" class="w-75">
+        <form action="/login" method="POST" class="w-50">
             @csrf
             <div class="mb-3">
                 <input type="text" name="username" class="form-control" placeholder="Username" required>

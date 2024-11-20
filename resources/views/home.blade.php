@@ -63,28 +63,28 @@
         <div class="row g-4">
             <div class="col-lg-4 col-md-6">
                 <div class="card template-card shadow-sm" onclick="selectTemplate('Landing Page')">
-                    <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Landing Page">
+                    <img src="{{asset('images/back1.jpg')}}" class="card-img-top" alt="Landing Page">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Landing Page</h5>
-                        <p class="card-text">Perfect for promoting products and services.</p>
+                        <h5 class="card-title">Agency</h5>
+                        <p class="card-text"> se destine aux petites entreprises et aux agences. Son design chaleureux et propre.</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="card template-card shadow-sm" onclick="selectTemplate('Portfolio')">
-                    <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="Portfolio">
+                    <img src="{{asset('images/back2.jpg')}}" class="card-img-top" alt="Portfolio">
                     <div class="card-body text-center">
-                        <h5 class="card-title">Portfolio</h5>
-                        <p class="card-text">Showcase your work with a professional portfolio layout.</p>
+                        <h5 class="card-title">Stylish Portfolio </h5>
+                        <p class="card-text">est un template Bootstrap permettant de créer un très beau portfolio sur une page.</p>
                     </div>
                 </div>
             </div>
             <div class="col-lg-4 col-md-6">
                 <div class="card template-card shadow-sm" onclick="selectTemplate('E-commerce')">
-                    <img src="https://via.placeholder.com/350x200" class="card-img-top" alt="E-commerce">
+                    <img src="{{asset('images/back3.jpg')}}" class="card-img-top" alt="E-commerce">
                     <div class="card-body text-center">
-                        <h5 class="card-title">E-commerce</h5>
-                        <p class="card-text">Create an online store with a modern and clean design.</p>
+                        <h5 class="card-title">Clean Blog</h5>
+                        <p class="card-text">est un template Bootstrap permettant de créer un très beau blog sur une page.</p>
                     </div>
                 </div>
             </div>

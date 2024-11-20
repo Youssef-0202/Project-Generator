@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Composant;
+use App\Models\Personalisation;
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class PersonalisationController extends Controller
@@ -11,7 +14,8 @@ class PersonalisationController extends Controller
      */
     public function index()
     {
-        //
+        $personalisations = Personalisation::with('project', 'component')->get();
+        return view('personalisations.index', compact('personalisations'));
     }
 
     /**
@@ -19,7 +23,10 @@ class PersonalisationController extends Controller
      */
     public function create()
     {
-        //
+        $projects = Project::all();
+        $components = Composant::all();
+        return view('personalisations.create', compact('projects', 'components'));
+
     }
 
     /**
@@ -27,7 +34,16 @@ class PersonalisationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'projectId' => 'required|exists:projects,projectId',
+            'componentId' => 'required|exists:composants,componentId',
+            'champ' => 'required|string',
+            'valeur' => 'required|string',
+        ]);
+
+        Personalisation::create($request->all());
+
+        return redirect()->route('personalisations.index')->with('success', 'Personnalisation ajoutée');
     }
 
     /**
@@ -41,24 +57,37 @@ class PersonalisationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Personalisation $personalisation)
     {
-        //
+        $projects = Project::all();
+        $components = Composant::all();
+        return view('personalisations.edit', compact('personalisation', 'projects', 'components'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Personalisation $personalisation)
     {
-        //
+        $request->validate([
+            'projectId' => 'required|exists:projects,projectId',
+            'componentId' => 'required|exists:composants,componentId',
+            'champ' => 'required|string',
+            'valeur' => 'required|string',
+        ]);
+
+        $personalisation->update($request->all());
+
+        return redirect()->route('personalisations.index')->with('success', 'Personnalisation mise à jour');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Personalisation $personalisation)
     {
-        //
+        $personalisation->delete();
+
+        return redirect()->route('personalisations.index')->with('success', 'Personnalisation supprimée');
     }
 }

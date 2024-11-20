@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Project;
 use Illuminate\Http\Request;
 
 class ProjectController extends Controller
@@ -11,7 +12,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        $projects = Project::with('user')->get(); // Eager loading pour obtenir l'utilisateur associé
+        return response()->json($projects);
     }
 
     /**
@@ -27,7 +29,10 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validated = $request->validated();
+        $project = Project::create($validated);
+
+        return response()->json(['message' => 'Project created successfully', 'project' => $project], 201);
     }
 
     /**
@@ -35,7 +40,13 @@ class ProjectController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $project = Project::find($id);
+
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+
+        return response()->json($project);
     }
 
     /**
@@ -43,7 +54,7 @@ class ProjectController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        
     }
 
     /**
@@ -51,7 +62,15 @@ class ProjectController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $project = Project::find($id);
+
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+
+        $project->update($request->validated());
+
+        return response()->json(['message' => 'Project updated successfully', 'project' => $project]);
     }
 
     /**
@@ -59,6 +78,15 @@ class ProjectController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $project = Project::find($id);
+
+        if (!$project) {
+            return response()->json(['message' => 'Project not found'], 404);
+        }
+
+        $project->delete();
+
+        return response()->json(['message' => 'Project deleted successfully']);
+
     }
 }
