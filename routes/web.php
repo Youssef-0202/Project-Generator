@@ -23,6 +23,16 @@ Route::get('/login', function () {
     return view('login');
 });
 
+Route::get('temp1', function(){
+    return view('templates/temp1');
+});
+Route::get('temp2', function(){
+    return view('templates/temp2');
+});
+
+Route::get('temp3', function(){
+    return view('templates/temp3');
+});
 
 Route::resource('projets', ProjectController::class);
 Route::resource('templates', TemplateController::class);
