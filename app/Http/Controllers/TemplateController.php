@@ -12,8 +12,8 @@ class TemplateController extends Controller
      */
     public function index()
     {
-        $templates = Template::with('composants')->get();
-        return response()->json($templates);
+        //$templates = Template::with('composants')->get();
+        return view('templates');
     }
 
     /**
