@@ -23,6 +23,7 @@ Route::get('/login', function () {
     return view('login');
 });
 
+
 Route::get('temp1', function(){
     return view('templates/temp1');
 });
@@ -33,6 +34,8 @@ Route::get('temp2', function(){
 Route::get('temp3', function(){
     return view('templates/temp3');
 });
+
+//Route::get('/preview/{templateId}', [TemplateController::class, 'preview'])->name('template.preview');
 
 Route::resource('projets', ProjectController::class);
 Route::resource('templates', TemplateController::class);

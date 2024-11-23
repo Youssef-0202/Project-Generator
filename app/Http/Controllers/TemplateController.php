@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 
 class TemplateController extends Controller
 {
+     // Define the mapping of template IDs to Blade file paths
+
+
+   
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //$templates = Template::with('composants')->get();
-        return view('templates');
+        $templates = Template::latest()->paginate();
+        return view('templates' , compact('templates'));
     }
 
     /**
@@ -42,10 +46,10 @@ class TemplateController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($templateId)
     {
-        $template = Template::with('composants')->findOrFail($id);
-        return response()->json($template);
+        $template = Template::where('templateId', $templateId)->first(); // Assuming the column is template_id
+    return view('templates.iframe', compact('template'));
     }
 
     /**
