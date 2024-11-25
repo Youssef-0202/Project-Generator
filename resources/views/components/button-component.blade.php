@@ -1,3 +1,1 @@
-<div>
-    <!-- The biggest battle is the war against ignorance. - Mustafa Kemal Atatürk -->
-</div>
+<button class="btn btn-primary">{{}}</button>

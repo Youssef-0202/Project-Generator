@@ -22,7 +22,9 @@ Route::get('/features', function () {
 Route::get('/login', function () {
     return view('login');
 });
-
+Route::get('/contact', function(){
+    return view('contact');
+});
 
 Route::get('temp1', function(){
     return view('templates/temp1');
