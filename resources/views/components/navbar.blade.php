@@ -10,7 +10,7 @@
                 <li class="nav-item"><a class="nav-link" href="{{ url('/') }}">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/features') }}">Features</a></li>
                 <li class="nav-item"><a class="nav-link" href="{{ url('/templates') }}">Templates</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{url('/contact')}}">Contact</a></li>
                 <li class="nav-item"><a class="btn btn-outline-warning mx-2" href=" {{url('/login')}}">Login</a></li>
                 <li class="nav-item"><a class="btn btn-warning text-dark" href="#">Get Started</a></li>
             </ul>
