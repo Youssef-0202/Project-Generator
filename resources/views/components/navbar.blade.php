@@ -42,24 +42,24 @@
 
 
 .custom-navbar .btn-outline-light {
-    background-color: #1d92bc; /* Muted teal primary color */
+    background-color: #56b2d3; /* Muted teal primary color */
     border-color: #6DA2B6;
     color: #fff;
 }
 
 .custom-navbar .btn-outline-light:hover {
-    background-color: #2b7d9b; /* Darker muted teal on hover */
+    background-color: #57a0bb; /* Darker muted teal on hover */
     border-color: #257fa0;
 }
 
 .custom-navbar .btn-primary {
-    background-color: #1d92bc; /* Muted teal primary color */
+    background-color: #51a8c8; /* Muted teal primary color */
     border-color: #6DA2B6;
     color: #fff;
 }
 
 .custom-navbar .btn-primary:hover {
-    background-color: #2b7d9b; /* Darker muted teal on hover */
+    background-color: #61a8c2; /* Darker muted teal on hover */
     border-color: #257fa0;
 }
 </style>

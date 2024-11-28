@@ -1,6 +1,8 @@
 @extends('layouts.app')
+@section('title', 'Login')
 
 @section('content')
+
 <div class="login-page">
     <div class="login-box">
         <h2 class="login-title">Sign In</h2>

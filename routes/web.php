@@ -53,13 +53,7 @@ Route::resource('personnalisations', PersonalisationController::class);
 
 
 
-Route::get('/', function () {
-    return view('home');
-});
 
-Route::get('/features', function () {
-    return view('features');
-});
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -71,25 +65,3 @@ Route::post('/reset-password', [PasswordResetController::class, 'reset'])->name(
 
 Route::get('register', [RegistrationController::class, 'create'])->name('register');
 Route::post('register', [RegistrationController::class, 'store']);
-
-Route::get('temp1', function(){
-    return view('templates/temp1');
-});
-Route::get('temp2', function(){
-    return view('templates/temp2');
-});
-
-Route::get('temp3', function(){
-    return view('templates/temp3');
-});
-
-//Route::get('/preview/{templateId}', [TemplateController::class, 'preview'])->name('template.preview');
-
-Route::resource('projets', ProjectController::class);
-Route::resource('templates', TemplateController::class);
-Route::resource('composants', ComposantController::class);
-Route::resource('champs', ChampController::class);
-Route::resource('imageuploads', ImageUploadController::class);
-Route::resource('previsualisations', PrevisualisationController::class);
-Route::resource('configurations', ConfigurationController::class);
-Route::resource('personnalisations', PersonalisationController::class);
