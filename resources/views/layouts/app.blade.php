@@ -9,8 +9,14 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.1/css/bootstrap.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+   
+    @if (Request::is('register'))
     <link rel="stylesheet" href="{{ asset('css/register.css') }}">
-    <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    @endif
+    @if (Request::is('login'))
+        <link rel="stylesheet" href="{{ asset('css/login.css') }}">
+    @endif
+
 
 </head>
 
