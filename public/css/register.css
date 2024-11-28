@@ -3,7 +3,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(to right, #4facfe, #00f2fe);
+    background: linear-gradient(135deg, #44799d, #A7D2D5); /* Muted blue and light teal gradient */
     color: #333;
 }
 
@@ -69,14 +69,14 @@ body {
 
 .form-group input:focus {
     outline: none;
-    border-color: #4facfe;
+    border-color: #6DA2B6; /* Muted teal for input focus */
     box-shadow: 0 0 5px rgba(79, 172, 254, 0.5);
 }
 
 .btn-register {
     width: 100%;
     padding: 10px;
-    background: #4facfe;
+    background: #6DA2B6; /* Muted teal background for the button */
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -87,7 +87,7 @@ body {
 }
 
 .btn-register:hover {
-    background: #00f2fe;
+    background: #4B7584; /* Darker teal on hover */
 }
 
 .register-footer {
@@ -97,7 +97,7 @@ body {
 }
 
 .register-footer a {
-    color: #4facfe;
+    color: #6DA2B6; /* Muted teal link color */
     text-decoration: none;
     font-weight: bold;
 }
