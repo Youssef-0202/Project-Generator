@@ -7,6 +7,18 @@ use Illuminate\Http\Request;
 
 class ComposantController extends Controller
 {
+
+    public function showNavbar()
+    {
+        // Fetch the Navbar component
+        $navbarData = Composant::where('name', 'Navbar')->first();
+        
+        // Decode the JSON content into an array
+        $navbarContent = json_decode($navbarData->contenu, true);
+
+        // Pass the decoded content to the Blade view
+        return view('template1.nav-bar', compact('navbarContent'));
+    }
     /**
      * Display a listing of the resource.
      */

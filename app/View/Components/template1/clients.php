@@ -1,19 +1,21 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\template1;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ImageComponent extends Component
+class clients extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public $content;
+
+    public function __construct($content)
     {
-        //
+        $this->content = $content; // Bind the content passed to this component
     }
 
     /**
@@ -21,6 +23,6 @@ class ImageComponent extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.image-component');
+        return view('components.template1.clients');
     }
 }
