@@ -28,10 +28,10 @@ Route::get('/login', function () {
 Route::get('/contact', function(){
     return view('contact');
 });
-
-Route::get('temp1', function(){
-    return view('templates/temp1');
-});
+Route::get('temp1', [TemplateController::class, 'renderTemp1']);
+// Route::get('temp1', function(){
+//     return view('templates/temp1');
+// });
 Route::get('temp2', function(){
     return view('templates/temp2');
 });

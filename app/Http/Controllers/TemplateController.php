@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Composant;
 use App\Models\Template;
 use Illuminate\Http\Request;
+use Ramsey\Uuid\Type\Integer;
 
 class TemplateController extends Controller
 {
@@ -43,13 +45,40 @@ class TemplateController extends Controller
         return response()->json(['message' => 'Template created successfully', 'template' => $template]);
     }
 
+    public function renderTemp1()
+    {
+        // Define the components data
+        // Fetch the latest template
+    $template = Template::latest()->first();
+
+    // Handle case where no templates exist
+    if (!$template) {
+        return abort(404, 'No templates available');
+    }
+
+    // Fetch associated components
+    $components = Composant::where('templateId', $template->templateId)->get();
+
+    // Decode components data
+    $componentsData = [];
+    foreach ($components as $component) {
+        $componentsData[$component->name] = json_decode($component->contenu, true);
+    }
+
+        // Pass data to the view
+        return view('templates.temp1', compact('componentsData'));
+    }
+
     /**
      * Display the specified resource.
      */
     public function show($templateId)
     {
-        $template = Template::where('templateId', $templateId)->first(); // Assuming the column is template_id
-    return view('templates.iframe', compact('template'));
+        $template = Template::where('templateId', $templateId)->first();
+    //    / Assuming the column is template_id
+        
+        
+    return view('templates.iframe', compact('template' ));
     }
 
     /**

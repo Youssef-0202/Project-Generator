@@ -1,12 +1,12 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\template1;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class ButtonComponent extends Component
+class pModals extends Component
 {
     /**
      * Create a new component instance.
@@ -21,6 +21,6 @@ class ButtonComponent extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.button-component');
+        return view('components.template1.p-modals');
     }
 }

@@ -1,19 +1,21 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\template1;
 
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Hero extends Component
+class about extends Component
 {
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public $content;
+
+    public function __construct($content)
     {
-        //
+        $this->content = $content; // Bind the content passed to this component
     }
 
     /**
@@ -21,6 +23,6 @@ class Hero extends Component
      */
     public function render(): View|Closure|string
     {
-        return view('components.hero');
+        return view('components.template1.about');
     }
 }

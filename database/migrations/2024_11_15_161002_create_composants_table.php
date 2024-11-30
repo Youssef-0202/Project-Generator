@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('composants', function (Blueprint $table) {
             $table->id('componentId');
             $table->unsignedBigInteger('templateId');
-            $table->string('type');
+            $table->string('name');
             $table->text('contenu')->nullable();
             $table->timestamps();
             $table->foreign('templateId')->references('templateId')->on('templates')->onDelete('cascade');
