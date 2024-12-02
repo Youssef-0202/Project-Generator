@@ -18,39 +18,55 @@
     </head>
     <body id="page-top">
         <!-- Navigation-->
-        @if(isset($componentsData['Navbar']))
-        <x-template1.nav-bar :content="$componentsData['Navbar']"/>
-        @endif
+        <div class="template-section" data-section="Navbar">
+            @if(isset($componentsData['Navbar']))
+                <x-template1.nav-bar :content="$componentsData['Navbar']"/>
+            @endif
+        </div>
         <!-- Masthead-->
-        @if(isset($componentsData['Masthead']))
-        <x-template1.mast-head :content="$componentsData['Masthead']"/>
-        @endif   
+        <div class="template-section" data-section="Masthead">
+            @if(isset($componentsData['Masthead']))
+            <x-template1.mast-head :content="$componentsData['Masthead']"/>
+            @endif      
+        </div> 
          <!-- Services-->
-         @if(isset($componentsData['Services']))
-        <x-template1.services  :content="$componentsData['Services']"/>
-        @endif
+        <div class="template-section" data-section="Services">
+            @if(isset($componentsData['Services']))
+            <x-template1.services  :content="$componentsData['Services']"/>
+            @endif
+        </div>
         <!-- Portfolio Grid-->
-        @if (isset($componentsData['Portfolio']))
-        <x-template1.portfolio :content="$componentsData['Portfolio']" />
-        @endif
+        <div class="template-section" data-section="Portfolio">
+            @if (isset($componentsData['Portfolio']))
+            <x-template1.portfolio :content="$componentsData['Portfolio']" />
+            @endif
+        </div>
         <!-- About-->
-        @if (isset($componentsData['About']))
-        <x-template1.about :content="$componentsData['About']" />
-        @endif
+        <div class="template-section" data-section="About">
+            @if (isset($componentsData['About']))
+            <x-template1.about :content="$componentsData['About']" />
+            @endif
+        </div>
         <!-- Team-->
-        @if (isset($componentsData['Team']))
-        <x-template1.team :content="$componentsData['Team']" />
-        @endif
+        <div class="template-section" data-section="Team">
+            @if (isset($componentsData['Team']))
+            <x-template1.team :content="$componentsData['Team']" />
+            @endif
+        </div>
         <!-- Clients-->
-        @if (isset($componentsData['Clients']))
-        <x-template1.client :content="$componentsData['Clients']" />
-        @endif
+        <div class="template-section" data-section="Clients">
+            @if (isset($componentsData['Clients']))
+            <x-template1.client :content="$componentsData['Clients']" />
+            @endif
+        </div>
         <!-- Contact-->
         <x-template1.contact/>  
         <!-- Footer-->       
-        @if (isset($componentsData['Footer']))
-        <x-template1.footer :content="$componentsData['Footer']" />
-        @endif
+        <div class="template-section" data-section="Footer">
+            @if (isset($componentsData['Footer']))
+            <x-template1.footer :content="$componentsData['Footer']" />
+            @endif
+        </div>
         <!-- Portfolio Modals-->
         <!-- Portfolio item 1 modal popup-->
         <x-template1.p-modals/>

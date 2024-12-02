@@ -5,6 +5,10 @@
 /public/storage
 /storage/*.key
 /storage/pail
+<<<<<<< HEAD
+=======
+/vendor
+>>>>>>> mb-branch
 .env.backup
 .env.production
 .phpactor.json
