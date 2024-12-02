@@ -48,19 +48,25 @@
             @endif
         </div>
         <!-- Team-->
-        @if (isset($componentsData['Team']))
-        <x-template1.team :content="$componentsData['Team']" />
-        @endif
+        <div class="template-section" data-section="Team">
+            @if (isset($componentsData['Team']))
+            <x-template1.team :content="$componentsData['Team']" />
+            @endif
+        </div>
         <!-- Clients-->
-        @if (isset($componentsData['Clients']))
-        <x-template1.client :content="$componentsData['Clients']" />
-        @endif
+        <div class="template-section" data-section="Clients">
+            @if (isset($componentsData['Clients']))
+            <x-template1.client :content="$componentsData['Clients']" />
+            @endif
+        </div>
         <!-- Contact-->
         <x-template1.contact/>  
         <!-- Footer-->       
-        @if (isset($componentsData['Footer']))
-        <x-template1.footer :content="$componentsData['Footer']" />
-        @endif
+        <div class="template-section" data-section="Footer">
+            @if (isset($componentsData['Footer']))
+            <x-template1.footer :content="$componentsData['Footer']" />
+            @endif
+        </div>
         <!-- Portfolio Modals-->
         <!-- Portfolio item 1 modal popup-->
         <x-template1.p-modals/>
