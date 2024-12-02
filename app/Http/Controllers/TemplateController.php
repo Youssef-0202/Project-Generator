@@ -84,25 +84,52 @@ class TemplateController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit()
     {
-        //
+            // Define the components data
+        // Fetch the latest template
+    $template = Template::latest()->first();
+
+    // Handle case where no templates exist
+    if (!$template) {
+        return abort(404, 'No templates available');
+    }
+
+    // Fetch associated components
+    $components = Composant::where('templateId', $template->templateId)->get();
+
+    // Decode components data
+    $componentsData = [];
+    foreach ($components as $component) {
+        $componentsData[$component->name] = json_decode($component->contenu, true);
+    }
+
+        // Pass data to the view
+        return view('templates.builder', compact( 'template','componentsData'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $componentName)
     {
-        $template = Template::findOrFail($id);
-        $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'imagePrev' => 'nullable|string',
-        ]);
+        $templateId = 1; // Example template ID
 
-        $template->update($validated);
-        return response()->json(['message' => 'Template updated successfully', 'template' => $template]);
+        // Fetch the component
+        $component = Composant::where('templateId', $templateId)
+            ->where('name', $componentName)
+            ->firstOrFail();
+        
+            if (!$component) {
+                return back()->withErrors("Component '$componentName' not found.");
+            }
+
+        // Update component data
+        $data = $request->except('_token');
+        $component->contenu = json_encode($data);
+        $component->save();
+
+        return back()->with('success', "$componentName updated successfully!");
     }
 
     /**

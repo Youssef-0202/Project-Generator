@@ -108,7 +108,7 @@
             </button>
         </div>
         <div>
-            <button class="btn btn-outline-warning">Start Your Design</button>
+            <a href="{{url('/builder')}}" class="btn btn-outline-warning">Start Your Design</a>
         </div>
     </nav>
 

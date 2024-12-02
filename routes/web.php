@@ -36,6 +36,8 @@ Route::get('temp2', function(){
 Route::get('temp3', function(){
     return view('templates/temp3');
 });
+ Route::get('builder' , [TemplateController::class , 'edit']);
+ Route::post('/template/update/{componentName}', [TemplateController::class, 'update'])->name('update.component');
 
 //Route::get('/preview/{templateId}', [TemplateController::class, 'preview'])->name('template.preview');
 
