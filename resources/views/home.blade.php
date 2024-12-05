@@ -4,7 +4,7 @@
 
 @section('content')
 <!-- Hero Section -->
-<section class="hero-section text-light d-flex align-items-center" style="background: linear-gradient(135deg, #4B6E8C, #A0B9C7); height: 100vh;">
+<section class="hero-section text-light d-flex align-items-center" style="background: linear-gradient(135deg, #118ddf, #6db1fe); height: 100vh;">
     <div class="container text-center">
         <div class="row">
             <div class="col-lg-8 mx-auto">

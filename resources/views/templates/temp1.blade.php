@@ -14,66 +14,82 @@
         <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css" />
         <link href="https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
-        <link href="{{asset('css/temp1.css')}}" rel="stylesheet" />
+        <link href="{{ asset('css/temp1.css') }}" rel="stylesheet" />
     </head>
     <body id="page-top">
         <!-- Navigation-->
         <div class="template-section" data-section="Navbar">
-            @if(isset($componentsData['Navbar']))
+            @if(isset($userComponentsData['Navbar']))
+                <x-template1.nav-bar :content="$userComponentsData['Navbar']"/>
+            @elseif(isset($componentsData['Navbar']))
                 <x-template1.nav-bar :content="$componentsData['Navbar']"/>
             @endif
         </div>
         <!-- Masthead-->
         <div class="template-section" data-section="Masthead">
-            @if(isset($componentsData['Masthead']))
-            <x-template1.mast-head :content="$componentsData['Masthead']"/>
-            @endif      
+            @if(isset($userComponentsData['Masthead']))
+                <x-template1.mast-head :content="$userComponentsData['Masthead']"/>
+            @elseif(isset($componentsData['Masthead']))
+                <x-template1.mast-head :content="$componentsData['Masthead']"/>
+            @endif
         </div> 
-         <!-- Services-->
+        <!-- Services-->
         <div class="template-section" data-section="Services">
-            @if(isset($componentsData['Services']))
-            <x-template1.services  :content="$componentsData['Services']"/>
+            @if(isset($userComponentsData['Services']))
+                <x-template1.services :content="$userComponentsData['Services']"/>
+            @elseif(isset($componentsData['Services']))
+                <x-template1.services :content="$componentsData['Services']"/>
             @endif
         </div>
         <!-- Portfolio Grid-->
         <div class="template-section" data-section="Portfolio">
-            @if (isset($componentsData['Portfolio']))
-            <x-template1.portfolio :content="$componentsData['Portfolio']" />
+            @if(isset($userComponentsData['Portfolio']))
+                <x-template1.portfolio :content="$userComponentsData['Portfolio']"/>
+            @elseif(isset($componentsData['Portfolio']))
+                <x-template1.portfolio :content="$componentsData['Portfolio']"/>
             @endif
         </div>
         <!-- About-->
         <div class="template-section" data-section="About">
-            @if (isset($componentsData['About']))
-            <x-template1.about :content="$componentsData['About']" />
+            @if(isset($userComponentsData['About']))
+                <x-template1.about :content="$userComponentsData['About']"/>
+            @elseif(isset($componentsData['About']))
+                <x-template1.about :content="$componentsData['About']"/>
             @endif
         </div>
         <!-- Team-->
         <div class="template-section" data-section="Team">
-            @if (isset($componentsData['Team']))
-            <x-template1.team :content="$componentsData['Team']" />
+            @if(isset($userComponentsData['Team']))
+                <x-template1.team :content="$userComponentsData['Team']"/>
+            @elseif(isset($componentsData['Team']))
+                <x-template1.team :content="$componentsData['Team']"/>
             @endif
         </div>
         <!-- Clients-->
         <div class="template-section" data-section="Clients">
-            @if (isset($componentsData['Clients']))
-            <x-template1.client :content="$componentsData['Clients']" />
+            @if(isset($userComponentsData['Clients']))
+                <x-template1.client :content="$userComponentsData['Clients']"/>
+            @elseif(isset($componentsData['Clients']))
+                <x-template1.client :content="$componentsData['Clients']"/>
             @endif
         </div>
         <!-- Contact-->
         <x-template1.contact/>  
         <!-- Footer-->       
         <div class="template-section" data-section="Footer">
-            @if (isset($componentsData['Footer']))
-            <x-template1.footer :content="$componentsData['Footer']" />
+            @if(isset($userComponentsData['Footer']))
+                <x-template1.footer :content="$userComponentsData['Footer']"/>
+            @elseif(isset($componentsData['Footer']))
+                <x-template1.footer :content="$componentsData['Footer']"/>
             @endif
         </div>
         <!-- Portfolio Modals-->
         <!-- Portfolio item 1 modal popup-->
         <x-template1.p-modals/>
-                <!-- Bootstrap core JS-->
+        <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <!-- Core theme JS-->
-        <script src="{{asset('js/scriptsTemp1.js')}}"></script>
+        <script src="{{ asset('js/scriptsTemp1.js') }}"></script>
         <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *-->
         <!-- * *                               SB Forms JS                               * *-->
         <!-- * * Activate your form at https://startbootstrap.com/solution/contact-forms * *-->
