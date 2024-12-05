@@ -2,32 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Composant;
 use App\Models\Template;
+use App\Models\Composant;
+use App\Models\UserTemplate;
 use Illuminate\Http\Request;
-use Ramsey\Uuid\Type\Integer;
 
 class TemplateController extends Controller
 {
-     // Define the mapping of template IDs to Blade file paths
+    // Define the mapping of template IDs to Blade file paths
 
-
-   
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $templates = Template::latest()->paginate();
-        return view('templates' , compact('templates'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        return view('templates', compact('templates'));
     }
 
     /**
@@ -47,27 +37,57 @@ class TemplateController extends Controller
 
     public function renderTemp1()
     {
-        // Define the components data
         // Fetch the latest template
-    $template = Template::latest()->first();
+        $template = Template::latest()->first();
 
-    // Handle case where no templates exist
-    if (!$template) {
-        return abort(404, 'No templates available');
-    }
+        // Handle case where no templates exist
+        if (!$template) {
+            return abort(404, 'No templates available');
+        }
 
-    // Fetch associated components
-    $components = Composant::where('templateId', $template->templateId)->get();
+        // Initialize components data
+        $componentsData = [];
 
-    // Decode components data
-    $componentsData = [];
-    foreach ($components as $component) {
-        $componentsData[$component->name] = json_decode($component->contenu, true);
-    }
+        // Check if the user is authenticated
+        if (auth()->check()) {
+            // Fetch the user's personalized template, if it exists
+            $userTemplate = UserTemplate::where('template_id', $template->templateId)
+                ->where('user_id', auth()->id())
+                ->first();
+
+            if ($userTemplate) {
+                // Load the personalized components data
+                $componentsData = json_decode($userTemplate->components_data, true);
+            } else {
+                // Fall back to default components
+                $componentsData = $this->getDefaultComponents($template->templateId);
+            }
+        } else {
+            // Load default components for unauthenticated users
+            $componentsData = $this->getDefaultComponents($template->templateId);
+        }
 
         // Pass data to the view
         return view('templates.temp1', compact('componentsData'));
     }
+
+    /**
+     * Helper function to fetch default components for a template.
+     */
+    private function getDefaultComponents($templateId)
+    {
+        // Fetch components associated with the template
+        $components = Composant::where('templateId', $templateId)->get();
+
+        // Decode components data
+        $componentsData = [];
+        foreach ($components as $component) {
+            $componentsData[$component->name] = json_decode($component->contenu, true);
+        }
+
+        return $componentsData;
+    }
+
 
     /**
      * Display the specified resource.
@@ -75,10 +95,7 @@ class TemplateController extends Controller
     public function show($templateId)
     {
         $template = Template::where('templateId', $templateId)->first();
-    //    / Assuming the column is template_id
-        
-        
-    return view('templates.iframe', compact('template' ));
+        return view('templates.iframe', compact('template'));
     }
 
     /**
@@ -86,27 +103,61 @@ class TemplateController extends Controller
      */
     public function edit()
     {
-            // Define the components data
         // Fetch the latest template
-    $template = Template::latest()->first();
+        $template = Template::latest()->first();
 
-    // Handle case where no templates exist
-    if (!$template) {
-        return abort(404, 'No templates available');
-    }
+        // Handle case where no templates exist
+        if (!$template) {
+            return abort(404, 'No templates available');
+        }
 
-    // Fetch associated components
-    $components = Composant::where('templateId', $template->templateId)->get();
+        // Check if the user is authenticated
+        if (auth()->check()) {
+            // Fetch the user's personalized template, if it exists
+            $userTemplate = UserTemplate::where('template_id', $template->templateId)
+                ->where('user_id', auth()->id())
+                ->first();
 
-    // Decode components data
-    $componentsData = [];
-    foreach ($components as $component) {
-        $componentsData[$component->name] = json_decode($component->contenu, true);
-    }
+            if ($userTemplate) {
+                // Load the personalized components data
+                $componentsData = json_decode($userTemplate->components_data, true);
+            } else {
+                // Fall back to the default components if no personalization exists
+                $componentsData = $this->getDefaultComponents($template->templateId);
+
+                // Optionally create a user template with default data for later modifications
+                $userTemplate = new UserTemplate();
+                $userTemplate->template_id = $template->templateId;
+                $userTemplate->user_id = auth()->id();
+                $userTemplate->components_data = json_encode($componentsData);
+                $userTemplate->save();
+            }
+        } else {
+            // Load default components for unauthenticated users
+            $componentsData = $this->getDefaultComponents($template->templateId);
+        }
 
         // Pass data to the view
-        return view('templates.builder', compact( 'template','componentsData'));
+        return view('templates.builder', compact('template', 'componentsData'));
     }
+
+
+    /**
+     * Helper function to fetch default components for a template.
+     */
+    // private function getDefaultComponents($templateId)
+    // {
+    //     // Fetch components associated with the template
+    //     $components = Composant::where('templateId', $templateId)->get();
+
+    //     // Decode components data
+    //     $componentsData = [];
+    //     foreach ($components as $component) {
+    //         $componentsData[$component->name] = json_decode($component->contenu, true);
+    //     }
+
+    //     return $componentsData;
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -114,22 +165,66 @@ class TemplateController extends Controller
     public function update(Request $request, $componentName)
     {
         $templateId = 1; // Example template ID
+        $userId = auth()->id();
 
-        // Fetch the component
-        $component = Composant::where('templateId', $templateId)
-            ->where('name', $componentName)
-            ->firstOrFail();
-        
-            if (!$component) {
-                return back()->withErrors("Component '$componentName' not found.");
-            }
+        // Ensure user is authenticated
+        if (!$userId) {
+            return abort(403, 'Unauthorized');
+        }
 
-        // Update component data
+        // Fetch or create the user's personalized template
+        $userTemplate = UserTemplate::where('template_id', $templateId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if (!$userTemplate) {
+            $userTemplate = new UserTemplate();
+            $userTemplate->template_id = $templateId;
+            $userTemplate->user_id = $userId;
+            $userTemplate->components_data = json_encode([]);
+        }
+
+        // Decode existing components data
+        $componentsData = json_decode($userTemplate->components_data, true);
+
+        // Update the specific component
         $data = $request->except('_token');
-        $component->contenu = json_encode($data);
-        $component->save();
+        $componentsData[$componentName] = $data;
+
+        // Save the updated components data
+        $userTemplate->components_data = json_encode($componentsData);
+        $userTemplate->save();
 
         return back()->with('success', "$componentName updated successfully!");
+    }
+
+    /**
+     * Save the updated components for the user.
+     */
+    public function saveUserTemplate(Request $request)
+    {
+        $templateId = 1; // Example template ID
+        $userId = auth()->id();
+
+        // Check if the user already has a personalized template
+        $userTemplate = UserTemplate::where('template_id', $templateId)
+            ->where('user_id', $userId)
+            ->first();
+
+        if ($userTemplate) {
+            // Update the existing user template with new components data
+            $userTemplate->components_data = json_encode($request->componentsData);
+            $userTemplate->save();
+        } else {
+            // Create a new user template with the modified components
+            $userTemplate = new UserTemplate();
+            $userTemplate->template_id = $templateId;
+            $userTemplate->user_id = $userId;
+            $userTemplate->components_data = json_encode($request->componentsData);
+            $userTemplate->save();
+        }
+
+        return response()->json(['message' => 'User template saved successfully']);
     }
 
     /**

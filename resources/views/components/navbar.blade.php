@@ -19,7 +19,7 @@
 
 <style>
 .custom-navbar {
-    background: linear-gradient(90deg, #44799d, #A7D2D5); /* Soft blue to light teal gradient */
+    background: linear-gradient(135deg, #118ddf, #6db1fe);
     border-bottom: 2px solid #E6E6E6; /* Light border for contrast */
 }
 

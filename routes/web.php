@@ -22,9 +22,7 @@ Route::get('/features', function () {
     return view('features');
 });
 
-Route::get('/login', function () {
-    return view('login');
-});
+
 Route::get('/contact', function(){
     return view('contact');
 });
@@ -39,8 +37,12 @@ Route::get('temp2', function(){
 Route::get('temp3', function(){
     return view('templates/temp3');
 });
- Route::get('builder' , [TemplateController::class , 'edit']);
- Route::post('/template/update/{componentName}', [TemplateController::class, 'update'])->name('update.component');
+ Route::get('builder' , [TemplateController::class , 'edit'])->middleware('auth');
+ Route::post('/template/update/{componentName}', [TemplateController::class, 'update'])->middleware('auth')->name('update.component');
+
+
+//  Route::get('builder/{templateId}', [TemplateController::class, 'edit'])->middleware('auth')->name('builder.edit');
+// Route::post('builder/{templateId}/update/{componentName}', [TemplateController::class, 'update'])->middleware('auth')->name('builder.update');
 
 //Route::get('/preview/{templateId}', [TemplateController::class, 'preview'])->name('template.preview');
 
@@ -57,8 +59,11 @@ Route::resource('personnalisations', PersonalisationController::class);
 
 
 
+
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 Route::get('/forgot-password', [PasswordResetController::class, 'showLinkRequestForm'])->name('password.request');
 Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLinkEmail'])->name('password.email');
