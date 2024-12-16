@@ -38,14 +38,16 @@
     // Forms for each section
     const forms = {
         Navbar: `
-           <form action="{{ route('update.component', 'Navbar') }}" method="POST">
+         <form action="{{ route('update.component', 'Navbar') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <h5>Navbar Settings</h5>
 
-    <!-- Logo -->
+    <!-- Logo URL -->
+
+    <!-- Image Upload -->
     <div class="mb-3">
-        <label for="logo" class="form-label">Logo URL</label>
-        <input type="text" name="logo" id="logo" class="form-control" value="{{ $componentsData['Navbar']['logo'] }}" placeholder="Enter logo URL">
+        <label for="logo" class="form-label">Upload Logo Image</label>
+        <input type="file" name="logo" id="logo" class="form-control" value="{{ $componentsData['Navbar']['logo'] }}>
     </div>
 
     <!-- Links -->
@@ -71,6 +73,7 @@
         <button type="submit" class="btn btn-primary">Save Navbar</button>
     </div>
 </form>
+
 
 
         `,
@@ -110,9 +113,20 @@
             <div class="mb-4 border p-3 rounded">
                 <h6>Service {{ $index + 1 }}</h6>
                 <div class="mb-3">
-                    <label for="service-icon-{{ $index }}" class="form-label">Icon Class</label>
-                    <input type="text" name="services[{{ $index }}][icon]" id="service-icon-{{ $index }}" class="form-control" value="{{ $service['icon'] }}">
-                </div>
+    <label for="service-icon-{{ $index }}" class="form-label">Icon</label>
+    <select name="services[{{ $index }}][icon]" id="service-icon-{{ $index }}" class="form-select" onchange="updateIconPreview({{ $index }})">
+        <option value="" disabled selected>Choose an icon</option>
+        <option value="fas fa-star" {{ $service['icon'] == 'fas fa-star' ? 'selected' : '' }}>⭐ Star</option>
+        <option value="fas fa-heart" {{ $service['icon'] == 'fas fa-heart' ? 'selected' : '' }}>❤️ Heart</option>
+        <option value="fas fa-cog" {{ $service['icon'] == 'fas fa-cog' ? 'selected' : '' }}>⚙️ Cog</option>
+        <option value="fas fa-rocket" {{ $service['icon'] == 'fas fa-rocket' ? 'selected' : '' }}>🚀 Rocket</option>
+        <option value="fas fa-globe" {{ $service['icon'] == 'fas fa-globe' ? 'selected' : '' }}>🌍 Globe</option>
+    </select>
+    <div class="icon-preview mt-2">
+        <i id="icon-preview-{{ $index }}" class="{{ $service['icon'] }} fa-2x text-primary"></i>
+    </div>
+</div>
+
                 <div class="mb-3">
                     <label for="service-title-{{ $index }}" class="form-label">Title</label>
                     <input type="text" name="services[{{ $index }}][title]" id="service-title-{{ $index }}" class="form-control" value="{{ $service['title'] }}">
@@ -142,10 +156,11 @@
             @foreach ($componentsData['Portfolio']['items'] as $index => $item)
             <div class="mb-4 border p-3 rounded">
                 <h6>Portfolio Item {{ $index + 1 }}</h6>
-                <div class="mb-3">
-                    <label for="portfolio-image-{{ $index }}" class="form-label">Image URL</label>
-                    <input type="text" name="items[{{ $index }}][image]" id="portfolio-image-{{ $index }}" class="form-control" value="{{ $item['image'] }}">
-                </div>
+               <div class="mb-3">
+    <label for="portfolio-image-{{ $index }}" class="form-label">Image</label>
+    <input type="file" name="items[{{ $index }}][image]" id="portfolio-image-{{ $index }}" class="form-control">
+</div>
+
                 <div class="mb-3">
                     <label for="portfolio-modal-{{ $index }}" class="form-label">Modal Link</label>
                     <input type="text" name="items[{{ $index }}][modal]" id="portfolio-modal-{{ $index }}" class="form-control" value="{{ $item['modal'] }}">
@@ -288,14 +303,11 @@
                 <input type="url" name="members[{{ $index }}][social][linkedin]" id="team-member-linkedin-{{ $index }}" class="form-control" value="{{ $member['social']['linkedin'] ?? '' }}" placeholder="Enter LinkedIn profile URL">
             </div>
 
-            <!-- Remove Button -->
-            <button type="button" class="btn btn-danger btn-sm remove-team-member">Remove</button>
+            
         </div>
         @endforeach
     </div>
 
-    <!-- Add New Member Button -->
-    <button type="button" class="btn btn-success btn-sm" id="add-team-member-btn">Add New Team Member</button>
 
     <!-- Section Description -->
     <div class="mb-3 mt-4">
@@ -424,6 +436,16 @@
     });
 });
 
+
+
+
+</script>
+<script>
+    function updateIconPreview(index) {
+        const selector = document.getElementById(`service-icon-${index}`);
+        const iconPreview = document.getElementById(`icon-preview-${index}`);
+        iconPreview.className = selector.value + ' fa-2x text-primary'; // Mettre à jour l'aperçu
+    }
 </script>
 </body>
 </html>

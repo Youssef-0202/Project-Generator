@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Composant;
 use App\Models\Template;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Type\Integer;
 
 class TemplateController extends Controller
@@ -112,25 +113,127 @@ class TemplateController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, $componentName)
-    {
-        $templateId = 1; // Example template ID
+{
+    $templateId = 1; // Exemple d'ID de modèle
 
-        // Fetch the component
-        $component = Composant::where('templateId', $templateId)
-            ->where('name', $componentName)
-            ->firstOrFail();
-        
-            if (!$component) {
-                return back()->withErrors("Component '$componentName' not found.");
-            }
+    // Récupérer le composant
+    $component = Composant::where('templateId', $templateId)
+        ->where('name', $componentName)
+        ->firstOrFail();
 
-        // Update component data
-        $data = $request->except('_token');
-        $component->contenu = json_encode($data);
-        $component->save();
+    // Récupérer le contenu actuel du composant
+    $contenu = json_decode($component->contenu, true);
 
-        return back()->with('success', "$componentName updated successfully!");
+    // Mise à jour du logo si présent
+    if ($request->hasFile('logo')) {
+        $contenu['logo'] = $this->storeImage($request->file('logo'), 'c_images');
     }
+
+    // Mise à jour des services
+    if ($request->has('services')) {
+        foreach ($request->input('services') as $index => $serviceData) {
+            $contenu['services'][$index] = array_merge(
+                $contenu['services'][$index] ?? [], // Conserver les données existantes
+                [
+                    'icon' => $serviceData['icon'] ?? ($contenu['services'][$index]['icon'] ?? 'fas fa-star'),
+                    'title' => $serviceData['title'] ?? ($contenu['services'][$index]['title'] ?? "Default Title $index"),
+                    'description' => $serviceData['description'] ?? ($contenu['services'][$index]['description'] ?? 'Default description'),
+                ]
+            );
+        }
+    }
+
+    // Mise à jour des éléments du portfolio
+    if ($request->has('items')) {
+        foreach ($request->input('items') as $index => $itemData) {
+            $contenu['items'][$index] = array_merge(
+                $contenu['items'][$index] ?? [],
+                [
+                    'modal' => $itemData['modal'] ?? ($contenu['items'][$index]['modal'] ?? '#'),
+                    'captionHeading' => $itemData['captionHeading'] ?? ($contenu['items'][$index]['captionHeading'] ?? "Default Caption Heading $index"),
+                    'captionSubheading' => $itemData['captionSubheading'] ?? ($contenu['items'][$index]['captionSubheading'] ?? "Default Caption Subheading $index"),
+                ]
+            );
+
+            // Mise à jour de l'image
+            if ($request->hasFile("items.$index.image")) {
+                $contenu['items'][$index]['image'] = $this->storeImage($request->file("items.$index.image"), 'portfolio_images');
+            }
+        }
+    }
+
+    // Mise à jour de la timeline pour "About"
+    if ($request->has('timeline')) {
+        foreach ($request->input('timeline') as $index => $timelineData) {
+            $contenu['timeline'][$index] = array_merge(
+                $contenu['timeline'][$index] ?? [],
+                [
+                    'year' => $timelineData['year'] ?? ($contenu['timeline'][$index]['year'] ?? ''),
+                    'subheading' => $timelineData['subheading'] ?? ($contenu['timeline'][$index]['subheading'] ?? ''),
+                    'description' => $timelineData['description'] ?? ($contenu['timeline'][$index]['description'] ?? ''),
+                    'finalMessage' => $timelineData['finalMessage'] ?? ($contenu['timeline'][$index]['finalMessage'] ?? ''),
+                    'inverted' => isset($timelineData['inverted']) ? (bool)$timelineData['inverted'] : ($contenu['timeline'][$index]['inverted'] ?? false),
+                ]
+            );
+
+            // Mise à jour de l'image
+            if ($request->hasFile("timeline.$index.image")) {
+                $contenu['timeline'][$index]['image'] = $this->storeImage($request->file("timeline.$index.image"), 'timeline_images');
+            }
+        }
+    }
+// Mise à jour des membres de l'équipe (team)
+if ($request->has('team')) {
+    // Supprimer les membres non présents dans les données reçues
+    $receivedTeamIndices = array_keys($request->input('team'));
+    $existingTeamIndices = array_keys($contenu['team'] ?? []);
+    $indicesToRemove = array_diff($existingTeamIndices, $receivedTeamIndices);
+
+    foreach ($indicesToRemove as $indexToRemove) {
+        unset($contenu['team'][$indexToRemove]);
+    }
+
+    // Mettre à jour ou ajouter les membres de l'équipe
+    foreach ($request->input('team') as $index => $teamData) {
+        $contenu['team'][$index] = array_merge(
+            $contenu['team'][$index] ?? [],
+            [
+                'name' => $teamData['name'] ?? ($contenu['team'][$index]['name'] ?? "Default Name $index"),
+                'position' => $teamData['position'] ?? ($contenu['team'][$index]['position'] ?? "Default Position"),
+                'bio' => $teamData['bio'] ?? ($contenu['team'][$index]['bio'] ?? "Default Bio"),
+            ]
+        );
+
+        // Mise à jour de la photo du membre de l'équipe
+        if ($request->hasFile("team.$index.photo")) {
+            $contenu['team'][$index]['photo'] = $this->storeImage($request->file("team.$index.photo"), 'team_photos');
+        }
+    }
+}
+
+
+    // Mise à jour du contenu dans la base de données
+    $component->contenu = json_encode($contenu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+    $component->save();
+
+    return back()->with('success', "$componentName mis à jour avec succès!");
+}
+
+/**
+ * Méthode utilitaire pour stocker une image.
+ *
+ * @param UploadedFile $file
+ * @param string $directory
+ * @return string URL de l'image stockée
+ */
+private function storeImage($file, $directory)
+{
+    $path = $file->store("public/$directory");
+    return asset('storage/' . str_replace('public/', '', $path));
+}
+
+    
+      
 
     /**
      * Remove the specified resource from storage.
