@@ -126,7 +126,6 @@
         <i id="icon-preview-{{ $index }}" class="{{ $service['icon'] }} fa-2x text-primary"></i>
     </div>
 </div>
-
                 <div class="mb-3">
                     <label for="service-title-{{ $index }}" class="form-label">Title</label>
                     <input type="text" name="services[{{ $index }}][title]" id="service-title-{{ $index }}" class="form-control" value="{{ $service['title'] }}">
@@ -273,6 +272,11 @@
                 <label for="team-member-image-{{ $index }}" class="form-label">Member Image</label>
                 <input type="file" name="members[{{ $index }}][image]" id="team-member-image-{{ $index }}" class="form-control">
                 <small class="text-muted">Current Image: {{ $member['image'] ?? 'None' }}</small>
+                @if($member['image'])
+                    <div class="mt-2">
+                        <img src="{{ asset($member['image']) }}" alt="Current Image" class="img-fluid" width="150">
+                    </div>
+                @endif
             </div>
 
             <!-- Name -->
@@ -287,27 +291,24 @@
                 <input type="text" name="members[{{ $index }}][role]" id="team-member-role-{{ $index }}" class="form-control" value="{{ $member['role'] }}" placeholder="Enter member's role">
             </div>
 
-            <!-- Social Links -->
+            <!-- Social Links (removed the ability to modify) -->
             <div class="mb-3">
                 <label for="team-member-twitter-{{ $index }}" class="form-label">Twitter Profile URL</label>
-                <input type="url" name="members[{{ $index }}][social][twitter]" id="team-member-twitter-{{ $index }}" class="form-control" value="{{ $member['social']['twitter'] ?? '' }}" placeholder="Enter Twitter profile URL">
+                <input type="text" name="members[{{ $index }}][social][twitter]" id="team-member-twitter-{{ $index }}" class="form-control" value="{{ $member['social']['twitter'] }}" disabled>
             </div>
 
             <div class="mb-3">
                 <label for="team-member-facebook-{{ $index }}" class="form-label">Facebook Profile URL</label>
-                <input type="url" name="members[{{ $index }}][social][facebook]" id="team-member-facebook-{{ $index }}" class="form-control" value="{{ $member['social']['facebook'] ?? '' }}" placeholder="Enter Facebook profile URL">
+                <input type="text" name="members[{{ $index }}][social][facebook]" id="team-member-facebook-{{ $index }}" class="form-control" value="{{ $member['social']['facebook'] }}" disabled>
             </div>
 
             <div class="mb-3">
                 <label for="team-member-linkedin-{{ $index }}" class="form-label">LinkedIn Profile URL</label>
-                <input type="url" name="members[{{ $index }}][social][linkedin]" id="team-member-linkedin-{{ $index }}" class="form-control" value="{{ $member['social']['linkedin'] ?? '' }}" placeholder="Enter LinkedIn profile URL">
+                <input type="text" name="members[{{ $index }}][social][linkedin]" id="team-member-linkedin-{{ $index }}" class="form-control" value="{{ $member['social']['linkedin'] }}" disabled>
             </div>
-
-            
         </div>
         @endforeach
     </div>
-
 
     <!-- Section Description -->
     <div class="mb-3 mt-4">
@@ -321,83 +322,73 @@
 
      `,
      Clients : `
-     <form action="{{ route('update.component', 'Logos') }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('update.component', 'Clients') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    <h5>Logos Section Settings</h5>
+    <h5>Clients Section Settings</h5>
 
     <!-- Logos -->
-    <h6>Logos</h6>
-    <div id="logos-container">
+    <h6>Client Logos</h6>
+    <div id="client-logos-container">
         @foreach ($componentsData['Clients']['logos'] as $index => $logo)
-        <div class="logo-item border p-3 mb-3" data-index="{{ $index }}">
+        <div class="client-logo-item border p-3 mb-3" data-index="{{ $index }}">
             <!-- Logo Image -->
             <div class="mb-3">
-                <label for="logo-image-{{ $index }}" class="form-label">Logo Image</label>
-                <input type="file" name="logos[{{ $index }}][image]" id="logo-image-{{ $index }}" class="form-control">
+                <label for="client-logo-image-{{ $index }}" class="form-label">Logo Image</label>
+                <input type="file" name="logos[{{ $index }}][image]" id="client-logo-image-{{ $index }}" class="form-control">
                 <small class="text-muted">Current Image: {{ $logo['image'] ?? 'None' }}</small>
-            </div>
-
-            <!-- Link -->
-            <div class="mb-3">
-                <label for="logo-link-{{ $index }}" class="form-label">Logo Link URL</label>
-                <input type="url" name="logos[{{ $index }}][link]" id="logo-link-{{ $index }}" class="form-control" value="{{ $logo['link'] }}" placeholder="Enter logo link URL">
             </div>
 
             <!-- Alt Text -->
             <div class="mb-3">
-                <label for="logo-alt-{{ $index }}" class="form-label">Logo Alt Text</label>
-                <input type="text" name="logos[{{ $index }}][alt]" id="logo-alt-{{ $index }}" class="form-control" value="{{ $logo['alt'] }}" placeholder="Enter logo alt text">
+                <label for="client-logo-alt-{{ $index }}" class="form-label">Alt Text</label>
+                <input type="text" name="logos[{{ $index }}][alt]" id="client-logo-alt-{{ $index }}" class="form-control" value="{{ $logo['alt'] }}" placeholder="Enter logo alt text">
             </div>
 
             <!-- Aria Label -->
             <div class="mb-3">
-                <label for="logo-aria-label-{{ $index }}" class="form-label">Aria Label</label>
-                <input type="text" name="logos[{{ $index }}][aria_label]" id="logo-aria-label-{{ $index }}" class="form-control" value="{{ $logo['aria_label'] }}" placeholder="Enter aria label for accessibility">
+                <label for="client-logo-aria-label-{{ $index }}" class="form-label">Aria Label</label>
+                <input type="text" name="logos[{{ $index }}][aria_label]" id="client-logo-aria-label-{{ $index }}" class="form-control" value="{{ $logo['aria_label'] }}" placeholder="Enter aria label">
             </div>
+
+            <!-- Logo Link - Removed -->
+            <!-- The link fields have been removed -->
         </div>
         @endforeach
     </div>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Save Logos Section</button>
+    <button type="submit" class="btn btn-primary">Save Client Logos</button>
 </form>
 
      `,
      Footer: `
-     <form action="{{ route('update.component', 'Footer') }}" method="POST">
+    <form action="{{ route('update.component', 'Footer') }}" method="POST" enctype="multipart/form-data">
     @csrf
-    <h5>Footer Settings</h5>
+    <h5>Footer Section Settings</h5>
 
     <!-- Copyright -->
     <div class="mb-3">
-        <label for="copyright" class="form-label">Copyright Text</label>
-        <input type="text" name="copyright" id="copyright" class="form-control" value="{{ $componentsData['Footer']['copyright'] }}">
+        <label for="copyright" class="form-label">Copyright</label>
+        <input type="text" name="copyright" id="copyright" class="form-control" value="{{ $componentsData['Footer']['copyright'] }}" placeholder="Enter copyright text">
     </div>
 
-    <!-- Social Links -->
-    <h6>Social Links</h6>
-    <div id="social-links-container">
-        @foreach ($componentsData['Footer']['social_links'] as $platform => $url)
-        <div class="social-link-item mb-3" data-platform="{{ $platform }}">
-            <label for="social-link-{{ $platform }}" class="form-label">{{ ucfirst($platform) }} URL</label>
-            <input type="url" name="social_links[{{ $platform }}]" id="social-link-{{ $platform }}" class="form-control" value="{{ $url }}" placeholder="Enter {{ ucfirst($platform) }} URL">
-        </div>
-        @endforeach
+    <!-- Social Links (Non-modifiable) -->
+    <h6>Social Media Links</h6>
+    <div>
+        <p>Twitter: {{ $componentsData['Footer']['social_links']['twitter'] }}</p>
+        <p>Facebook: {{ $componentsData['Footer']['social_links']['facebook'] }}</p>
+        <p>LinkedIn: {{ $componentsData['Footer']['social_links']['linkedin'] }}</p>
     </div>
 
-    <!-- Footer Links -->
+    <!-- Footer Links (Non-modifiable) -->
     <h6>Footer Links</h6>
-    <div id="footer-links-container">
-        @foreach ($componentsData['Footer']['footer_links'] as $label => $url)
-        <div class="footer-link-item mb-3" data-label="{{ $label }}">
-            <label for="footer-link-{{ $label }}" class="form-label">{{ ucfirst(str_replace('_', ' ', $label)) }} URL</label>
-            <input type="url" name="footer_links[{{ $label }}]" id="footer-link-{{ $label }}" class="form-control" value="{{ $url }}" placeholder="Enter URL for {{ ucfirst(str_replace('_', ' ', $label)) }}">
-        </div>
-        @endforeach
+    <div>
+        <p>Privacy Policy: {{ $componentsData['Footer']['footer_links']['privacy_policy'] }}</p>
+        <p>Terms of Use: {{ $componentsData['Footer']['footer_links']['terms_of_use'] }}</p>
     </div>
 
     <!-- Submit Button -->
-    <button type="submit" class="btn btn-primary">Save Footer Settings</button>
+    <button type="submit" class="btn btn-primary">Save Footer Section</button>
 </form>
 
      `
