@@ -386,7 +386,6 @@ if ($request->has('footer')) {
 
     // Mise à jour du contenu dans la base de données
     $component->contenu = json_encode($contenu, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-    dd($component->contenu);
     $component->save();
 
     return back()->with('success', "$componentName mis à jour avec succès!");
